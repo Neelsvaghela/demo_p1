@@ -1,7 +1,5 @@
-import 'package:demo_p1/ui/user_register/user_register.dart';
 import 'package:flutter/material.dart';
-
-
+import 'package:insurance_project/utils/firebase_repo.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -126,7 +124,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 onPressed: () {
                   //signup screen
-                  // Navigator.of(context).push(MaterialPageRoute(builder: (context) => RegisterScreen()))
+                  FirebaseRepo().signup(address1Controller.text+", "+address2Controller.text.toString() , passwordController.text, emailController.text, nameController.text, mobileController.text,);
                 },
               )
             ],

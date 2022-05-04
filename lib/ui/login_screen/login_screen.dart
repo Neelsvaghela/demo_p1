@@ -1,6 +1,8 @@
-import 'package:demo_p1/ui/user_register/user_register.dart';
 import 'package:flutter/material.dart';
+import 'package:insurance_project/ui/user_dashboard/user_dashboard.dart';
+import 'package:insurance_project/utils/colorsconstants.dart';
 
+import '../user_register/user_register.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -10,19 +12,32 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
   TextEditingController nameController = TextEditingController();
+  FocusNode nameFocusNode = FocusNode();
+
   TextEditingController passwordController = TextEditingController();
-  static const String _title = 'User Login';
+  FocusNode passwordFocusNode = FocusNode();
+
+  static const String _title = 'Insurance App';
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
   }
 
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text(_title)),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text(_title),
+      ),
       body:  Padding(
           padding: const EdgeInsets.all(10),
           child: ListView(
@@ -31,9 +46,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(10),
                   child: const Text(
-                    'Insurance App',
+                    "User Login",
                     style: TextStyle(
-                        color: Colors.blue,
+                        color: ColorsConstants.themeColor,
                         fontWeight: FontWeight.w500,
                         fontSize: 30),
                   )),
@@ -44,27 +59,41 @@ class _LoginScreenState extends State<LoginScreen> {
                     '',
                     style: TextStyle(fontSize: 20),
                   )),
-              Container(
-                padding: const EdgeInsets.all(10),
-                child: TextField(
-                  controller: nameController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'User Name',
+
+              Form(
+                key: _formKey,
+                  child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    child: TextFormField(
+                      focusNode: nameFocusNode,
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.text,
+                      controller: nameController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'User Name',
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: TextField(
-                  obscureText: true,
-                  controller: passwordController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                    child: TextField(
+                      obscureText: true,
+                      controller: passwordController,
+                      focusNode: passwordFocusNode,
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Password',
+                      ),
+                    ),
                   ),
-                ),
-              ),
+                ],
+              )),
+
               TextButton(
                 onPressed: () {
                   //forgot password screen
@@ -77,7 +106,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: ElevatedButton(
                     child: const Text('Login'),
                     onPressed: () {
-
+                      if (!_formKey.currentState!.validate()) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Enter Correct Details"))
+                        );
+                      }else{
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => UserDashboard(),));
+                      }
                     },
                   )
               ),
@@ -99,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ],
           )),
-    );
+    ),);
   }
 
   @override

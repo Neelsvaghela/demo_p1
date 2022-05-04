@@ -1,9 +1,10 @@
-import 'package:demo_p1/ui/splash_screen/splash_screen.dart';
+import 'package:insurance_project/ui/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:insurance_project/utils/colorsconstants.dart';
 
 void main() {
   Future.delayed( const Duration(seconds: 2),
-         () => runApp(MyApp()));
+         () => runApp(const MyApp()));
   runApp(const MyApp());
 }
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: ColorsConstants.themeColor,
       ),
       home: SplashScreen(),
     );
