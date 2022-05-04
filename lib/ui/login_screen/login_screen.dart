@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insurance_project/ui/user_dashboard/user_dashboard.dart';
 import 'package:insurance_project/utils/colorsconstants.dart';
+import 'package:insurance_project/utils/firebase_repo.dart';
 
 import '../user_register/user_register.dart';
 
@@ -84,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: passwordController,
                       focusNode: passwordFocusNode,
                       textInputAction: TextInputAction.done,
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.visiblePassword,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Password',
@@ -105,13 +106,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: ElevatedButton(
                     child: const Text('Login'),
-                    onPressed: () {
+                    onPressed: () async{
                       if (!_formKey.currentState!.validate()) {
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text("Enter Correct Details"))
                         );
                       }else{
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => UserDashboard(),));
+                        var result= await FirebaseRepo().signIn(nameController.text, passwordController.text);
+                        if(await result !=null){
+                          print("success");
+                        }else{
+                          print("unSuccess");
+                        }
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) => UserDashboard(),));
                       }
                     },
                   )

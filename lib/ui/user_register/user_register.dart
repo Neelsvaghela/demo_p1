@@ -110,7 +110,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: ElevatedButton(
                 child: const Text('Register'),
                 onPressed: () {
-
+                  FirebaseRepo().signup(address1Controller.text+", "+address2Controller.text.toString() , passwordController.text, emailController.text, nameController.text, mobileController.text,);
                 },
               )
           ),
@@ -124,7 +124,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 onPressed: () {
                   //signup screen
-                  FirebaseRepo().signup(address1Controller.text+", "+address2Controller.text.toString() , passwordController.text, emailController.text, nameController.text, mobileController.text,);
                 },
               )
             ],
