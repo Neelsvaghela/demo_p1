@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insurance_project/utils/colorsconstants.dart';
 import 'package:insurance_project/utils/firebase_repo.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -33,7 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: const Text(
                 'Insurance App',
                 style: TextStyle(
-                    color: Colors.blue,
+                    color: ColorsConstants.themeColor,
                     fontWeight: FontWeight.w500,
                     fontSize: 30),
               )),
@@ -122,8 +123,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   'Sign in',
                   style: TextStyle(fontSize: 20),
                 ),
-                onPressed: () {
+                onPressed: () async{
                   //signup screen
+                  var result= await FirebaseRepo().signup(
+                    address1Controller.text.toString()+address2Controller.text.toString(),
+                    passwordController.text.toString(),
+                    emailController.text.toString(),
+                    nameController.text.toString(),
+                    mobileController.text.toString()
+                  );
+                  if(result !=null){
+                    print("success");
+                  }else{
+                    print("unSuccess");
+                  }
                 },
               )
             ],

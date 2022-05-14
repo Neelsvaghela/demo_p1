@@ -3,29 +3,34 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseRepo{
 
-  void signup(String address,String cnfpassword,String spemail,String username,String contactno)async{
+  Future<UserCredential?> signup(String address,String cnfpassword,String spemail,String username,String contactno)async{
     {
+      UserCredential useCred;
       if(address.isNotEmpty && cnfpassword.isNotEmpty){
         try{
-          // final QuerySnapshot result=await FirebaseFirestore.instance.collection("signup_waiting").get();
-          // final List<DocumentSnapshot> document=result.docs;
-          // if(document.length==0){
+          // ignore: prefer_is_not_empty
           if(!(spemail.isEmpty) && !(username.isEmpty && !(address.isEmpty))){
-            FirebaseFirestore.instance.collection("signedUp").doc(spemail).set({
-              "Email":spemail,
-              "name":username,
-              "address":address,
-              "contact_no":contactno,
-              "password":cnfpassword,
+            useCred = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: spemail, password: cnfpassword).then((value) {
+              FirebaseFirestore.instance.collection("signedUp").doc(spemail).set({
+                "Email":value.user?.email.toString(),
+                "name":value.user?.displayName.toString(),
+                "address":address,
+                "contact_no":contactno,
+                "password":cnfpassword,
+              });
+              return value;
             });
             print("success");
+            return useCred;
           }else{
+            return null;
             print("failed");
           }
         }catch(error){
           print("failed : ${error}");
         }
       }else{
+        return null;
         print("failed");
       }
     }
