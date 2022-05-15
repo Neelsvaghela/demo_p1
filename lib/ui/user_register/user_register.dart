@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:insurance_project/ui/login_screen/login_screen.dart';
 import 'package:insurance_project/utils/colorsconstants.dart';
 import 'package:insurance_project/utils/firebase_repo.dart';
+
+import '../user_dashboard/user_dashboard.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -110,8 +113,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: ElevatedButton(
                 child: const Text('Register'),
-                onPressed: () {
-                  FirebaseRepo().signup(address1Controller.text+", "+address2Controller.text.toString() , passwordController.text, emailController.text, nameController.text, mobileController.text,);
+                onPressed: () async{
+                  //signup screen
+                  var result= await FirebaseRepo().signup(
+                      address1Controller.text.toString()+address2Controller.text.toString(),
+                      passwordController.text.toString(),
+                      emailController.text.toString(),
+                      nameController.text.toString(),
+                      mobileController.text.toString()
+                  );
+                  if(result !=null){
+                    print("success");
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => UserDashboard(),));
+                  }else{
+                    print("unSuccess");
+                  }
                 },
               )
           ),
@@ -123,20 +139,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   'Sign in',
                   style: TextStyle(fontSize: 20),
                 ),
-                onPressed: () async{
-                  //signup screen
-                  var result= await FirebaseRepo().signup(
-                    address1Controller.text.toString()+address2Controller.text.toString(),
-                    passwordController.text.toString(),
-                    emailController.text.toString(),
-                    nameController.text.toString(),
-                    mobileController.text.toString()
-                  );
-                  if(result !=null){
-                    print("success");
-                  }else{
-                    print("unSuccess");
-                  }
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
                 },
               )
             ],

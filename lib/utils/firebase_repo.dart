@@ -24,29 +24,25 @@ class FirebaseRepo{
             return useCred;
           }else{
             return null;
-            print("failed");
           }
         }catch(error){
           print("failed : ${error}");
         }
       }else{
         return null;
-        print("failed");
       }
     }
   }
 
-Future<User?> signIn(String email,String password) async {
+  Future<User?> signIn(String email,String password) async {
   if(email!=null && password!=null){
     try{
-      UserCredential useCred=await FirebaseAuth.instance.signInWithEmailAndPassword(email: email.trim(), password: password.trim());
-      try {
         UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: email.trim(),
             password: password.trim()
         );
         print(userCredential);
-
+        return userCredential.user;
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -59,15 +55,6 @@ Future<User?> signIn(String email,String password) async {
           // ));
           return null;
         }
-      }
-      User? user = FirebaseAuth.instance.currentUser;
-
-      // final QuerySnapshot result=await FirebaseFirestore.instance.collection("users").where("id",isEqualTo: user?.uid).get();
-      // final List<DocumentSnapshot> document=result.docs;
-
-      return user;
-    }catch(error){
-      print(error);
     }
   }else{
     // ScaffoldMessenger.of(context).showSnackBar(SnackBar(

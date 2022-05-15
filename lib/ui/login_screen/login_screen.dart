@@ -115,10 +115,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         var result= await FirebaseRepo().signIn(nameController.text, passwordController.text);
                         if(await result !=null){
                           print("success");
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => UserDashboard(),));
                         }else{
                           print("unSuccess");
                         }
-                        // Navigator.push(context, MaterialPageRoute(builder: (context) => UserDashboard(),));
+
                       }
                     },
                   )
